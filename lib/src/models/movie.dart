@@ -9,7 +9,7 @@ class Movies {
 
     items = jsonList.map((movie) {
       return Movie.fromJsonMap(movie);
-    });
+    }).toList();
   }
 }
 
@@ -49,7 +49,7 @@ class Movie {
   Movie.fromJsonMap(Map<String, dynamic> json) {
     popularity = json["popularity"] / 1.0;
     voteCount = json["vote_count"];
-    video = json["video"] / 1.0;
+    video = json["video"];
     posterPath = json["poster_path"];
     id = json["id"];
     adult = json["adult"];
@@ -58,8 +58,15 @@ class Movie {
     originalTitle = json["original_title"];
     genreIds = json["genre_ids"].cast<int>();
     title = json["title"];
-    voteAverage = json["vote_average"];
+    voteAverage = json["vote_average"] / 1.0;
     overview = json["overview"];
     releaseDate = json["release_date"];
+  }
+
+  String getPosterImg() {
+    if (posterPath == null) {
+      return "https://store.charteredaccountantsanz.com/sca-dev-kilimanjaro/img/no_image_available.jpeg";
+    }
+    return "https://image.tmdb.org/t/p/w500/$posterPath";
   }
 }
