@@ -7,13 +7,7 @@ class MoviesProvider {
   String _url = 'api.themoviedb.org';
   String _languaje = 'es-CO';
 
-  Future<List<Movie>> getInCinemas() async {
-    final queryStrings = {
-      "api_key": _apiKey,
-      "language": _languaje,
-    };
-    final url = Uri.https(_url, "3/movie/upcoming", queryStrings);
-
+  Future<List<Movie>> _processResponse(Uri url) async {
     final response = await http.get(url);
     final decodeData = json.decode(response.body);
 
@@ -22,18 +16,21 @@ class MoviesProvider {
     return movies.items;
   }
 
+  Future<List<Movie>> getInCinemas() async {
+    final queryStrings = {
+      "api_key": _apiKey,
+      "language": _languaje,
+    };
+    final url = Uri.https(_url, "3/movie/upcoming", queryStrings);
+    return await _processResponse(url);
+  }
+
   Future<List<Movie>> getPopulars() async {
     final queryStrings = {
       "api_key": _apiKey,
       "language": _languaje,
     };
     final url = Uri.https(_url, "3/movie/popular", queryStrings);
-
-    final response = await http.get(url);
-    final decodeData = json.decode(response.body);
-
-    final movies = new Movies.fromJsonList(decodeData["results"]);
-    print(movies.items[0].title);
-    return movies.items;
+    return await _processResponse(url);
   }
 }

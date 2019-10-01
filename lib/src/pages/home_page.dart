@@ -31,7 +31,6 @@ class HomePage extends StatelessWidget {
 
   Widget _swipedTargets() {
     final moviesProvider = new MoviesProvider();
-    moviesProvider.getInCinemas();
     return FutureBuilder(
       future: moviesProvider.getInCinemas(),
       initialData: [],
@@ -54,23 +53,21 @@ class HomePage extends StatelessWidget {
 
   _footer(BuildContext context) {
     final moviesProvider = new MoviesProvider();
-    moviesProvider.getPopulars();
     return Container(
-      width: double.infinity,
+      width: double.infinity * 0.8,
       child: Column(
         children: <Widget>[
           Text(
             "Populars",
             style: Theme.of(context).textTheme.subhead,
           ),
-
-          // FutureBuilder(
-          //   future: ,
-          //   initialData: ,
-          //   builder: (BuildContext context, AsyncSnapshot snapshot){
-          //     return;
-          //   },
-          // )
+          FutureBuilder(
+            future: moviesProvider.getPopulars(),
+            builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+              snapshot.data?.forEach((p) => print(p.title));
+              return Container();
+            },
+          )
         ],
       ),
     );
