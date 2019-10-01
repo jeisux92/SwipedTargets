@@ -30,6 +30,5 @@ class CardSwiper extends StatelessWidget {
         itemCount: movies.length,
       ),
     );
-    ;
   }
 }
